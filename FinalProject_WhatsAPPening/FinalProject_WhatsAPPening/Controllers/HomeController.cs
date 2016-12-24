@@ -14,7 +14,7 @@ using System.Security.Cryptography.Xml;
 using SimpleOAuth;
 
 
-namespace FinalProject_WhatsAPPening.Controllers 
+namespace FinalProject_WhatsAPPening.Controllers
 {
 
     public class HomeController : Controller
@@ -53,7 +53,11 @@ namespace FinalProject_WhatsAPPening.Controllers
             string data = null;
             try
             {
-                data = Factual.Fetch("restaurants",
+                int dataAttempts = 0;
+                do
+                {
+
+                    data = Factual.Fetch("restaurants",
                     new Query()
                         .Field("price")
                         .Equal(price)
@@ -63,6 +67,10 @@ namespace FinalProject_WhatsAPPening.Controllers
                         .Equal(dataRequest.Zipcode)
                         .Offset(0)
                         .Limit(20));
+
+                    dataAttempts++;
+
+                } while (data == null && dataAttempts <= 5);
             }
             catch
             {
@@ -148,7 +156,7 @@ namespace FinalProject_WhatsAPPening.Controllers
                 {
                     activities.Add(activity);
                 }
-                
+
 
             }
 
@@ -326,7 +334,7 @@ namespace FinalProject_WhatsAPPening.Controllers
 
                     }
 
-                    
+
                     activities.Add(newActivity);
                 }
 
